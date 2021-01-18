@@ -65,11 +65,41 @@ func TestPut(t *testing.T) {
 	b := OpenDB(dbPath)
 	b.LoadData()
 
-	b.Put("eric", "feng")
+	err := b.Put("eric", "feng")
+	if err != nil {
+		t.Error("test put error")
+	}
 	os.RemoveAll(dbPath)
 
 }
 
+func TestGet(t *testing.T) {
+	// go test  -v -timeout 30s gobitcast/v1 -run TestGet
+	dbPath := "./v1db"
+	os.RemoveAll(dbPath)
+	b := OpenDB(dbPath)
+	b.LoadData()
+
+	err, _ := b.Get("eri")
+	if err != ErrKeyNotExist {
+		t.Error("get not exist key error")
+	}
+
+	b.Put("yjl", "hello world")
+
+	err, value := b.Get("yjl")
+	if err != nil {
+		t.Error("get  exist key error", err)
+	}
+	if value != "hello world" {
+		t.Error("value wrong")
+	}
+
+	os.RemoveAll(dbPath)
+
+	// fmt.Println("STR2:", value)
+
+}
 func TestPutAndGet(t *testing.T) {
 	// go test  -v -timeout 30s gobitcast/v1 -run TestPutAndGet
 	dbPath := "./v1db"
@@ -96,7 +126,7 @@ func TestPutAndGet(t *testing.T) {
 	// }
 	fmt.Println("STR2:", value)
 
-	// os.RemoveAll(dbPath)
+	os.RemoveAll(dbPath)
 }
 
 func TestDataLoad(t *testing.T) {

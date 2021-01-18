@@ -78,6 +78,8 @@ func (b *bitcast) Get(key string) (error, string) {
 	}
 	// var reader *os.File
 
+	fmt.Println("metainfo:", meta)
+
 	datafile := strconv.Itoa(int(meta.fileID)) + ".dat"
 	readerPath := b.name + "/" + datafile
 
@@ -178,7 +180,9 @@ func (b *bitcast) EmptyInit() {
 
 func (b *bitcast) LoadDatafile(filename string) {
 	path := b.name + "/" + filename
-	fid, _ := strconv.Atoi(filename[:len(filename)-3])
+	fmt.Println()
+	fid, _ := strconv.Atoi(filename[:len(filename)-4]) // exp:  1.data -> fid =1
+
 	fmt.Println("fid:", fid)
 	fd, err := os.Open(path)
 	if err != nil {
@@ -270,11 +274,12 @@ func (b *bitcast) LoadData() {
 	for i := 0; i < len(files); i++ {
 		datafile := files[i]
 
+		fmt.Println("FILENAME:", datafile.Name())
 		b.LoadDatafile(datafile.Name())
 
 	}
 
-	//TODO  process the max fid
+	//TODO  process the max fid, set max file id as active
 
 	//TODO  set fid 0 to be the active fid and init activeWriter
 
