@@ -49,9 +49,6 @@ func TestLoadDataWithFiles(t *testing.T) {
 
 	b := OpenDB(dbPath)
 
-	os.Create(dbPath + "/1.dat")
-	os.Create(dbPath + "/2.dat")
-
 	b.LoadData()
 
 	// t.Log("success")
